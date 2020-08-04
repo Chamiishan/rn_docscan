@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: online.devliving:mobilevision-pipeline:1.0.7@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/658e719b80eb0c275553790395489d2a/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/658e719b80eb0c275553790395489d2a/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/658e719b80eb0c275553790395489d2a/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/online.devliving/mobilevision-pipeline/1.0.7/634e912cc4728b0151e883007458c1892e092d51/mobilevision-pipeline-1.0.7-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/online.devliving/mobilevision-pipeline/1.0.7/effda662367bf7f034d2b54978cb732fba31bdd5/mobilevision-pipeline-1.0.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

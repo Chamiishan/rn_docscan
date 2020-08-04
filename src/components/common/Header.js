@@ -1,31 +1,37 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image, StyleSheet } from 'react-native';
 
 const Header = (props) => {
     const { textStyle, viewStyle } = styles;
 
     return (
         <View style={viewStyle}>
-            <Text style={textStyle}>{props.title}</Text>
+            <View >
+                {props.Button1}
+            </View>
+            <View >
+                <Text style={props.titleStyle}>{props.title}</Text>
+            </View>
+            <View style={{ alignItems: "flex-end", flexDirection: 'row' }}>
+                {props.Button2}
+                {props.Button3}
+            </View>
         </View>
     );
 };
 
-const styles = {
+const styles = StyleSheet.create({
     viewStyle: {
-        backgroundColor: '#F8F8F8',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: 'green',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         height: 60,
-        paddingTop: 15,
+        padding: 10,
         shadowColor: '#000000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.5,
-        position: 'relative'
     },
-    textStyle: {
-        fontSize: 20
-    }
-};
+});
 
 export { Header };

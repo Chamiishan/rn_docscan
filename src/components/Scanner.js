@@ -1,7 +1,13 @@
 import React, { useRef, useState, useEffect } from "react"
-import { View, StyleSheet, Text, TouchableOpacity, Image, Platform } from "react-native"
+import { View, StyleSheet, Text, Dimensions, TouchableOpacity, TouchableHighlight, Image, Platform } from "react-native"
 import Permissions from 'react-native-permissions';
-import PDFScanner from "@woonivers/react-native-document-scanner"
+import PDFScanner from "@woonivers/react-native-document-scanner";
+import { Header } from './common/Header';
+import { Actions } from "react-native-router-flux";
+
+const screenWidth = Math.round(Dimensions.get('window').width);
+const screenHeight = Math.round(Dimensions.get('window').height);
+
 
 export default function Scanner() {
   const pdfScannerElement = useRef(null)
@@ -41,6 +47,21 @@ export default function Scanner() {
   }
   return (
     <React.Fragment>
+      <Header
+        title={""}
+        titleStyle={{ color: 'white', fontSize: 30 }}
+        Button1={
+          <TouchableHighlight onPress={() => {
+            console.log("back pressed");
+            Actions.pop();
+          }}>
+            <Image
+              source={require('../icons/back.png')}
+            />
+          </TouchableHighlight>
+        }
+
+      />
       <PDFScanner
         ref={pdfScannerElement}
         style={styles.scanner}
@@ -51,9 +72,18 @@ export default function Scanner() {
         detectionCountBeforeCapture={5}
         detectionRefreshRateInMS={50}
       />
-      <TouchableOpacity onPress={handleOnPress} style={styles.button}>
+      <View style={styles.footer}>
+        <TouchableOpacity>
+          <Image source={require('../icons/flash_auto.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cImg} onPress={handleOnPress}>
+          <Image source={require('../icons/capture.png')} />
+        </TouchableOpacity>
+        <View></View>
+      </View>
+      {/* <TouchableOpacity onPress={handleOnPress} style={styles.button}>
         <Text style={styles.buttonText}>Take picture</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </React.Fragment>
   )
 }
@@ -78,8 +108,23 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   permissions: {
-    flex:1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center"
+  },
+  footer: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    flexDirection: "row",
+    backgroundColor: '#969696',
+    width: screenWidth,
+    alignItems: "center",
+    justifyContent: "space-between"
+
+  },
+  cImg: {
+    alignSelf: "center"
   }
 })
