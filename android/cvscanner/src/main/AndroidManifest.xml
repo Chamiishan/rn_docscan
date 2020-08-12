@@ -18,7 +18,7 @@
             />
 
         <activity android:name=".crop.CropImageActivity"
-            android:theme="@style/CVScannerTheme"
+            android:theme="@style/AppTheme"
             android:configChanges="orientation|screenSize"
             />
 

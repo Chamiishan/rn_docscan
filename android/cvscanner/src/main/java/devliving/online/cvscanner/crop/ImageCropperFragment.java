@@ -4,24 +4,18 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-//import android.support.annotation.ColorRes;
-//import android.support.annotation.DrawableRes;
-//import android.support.annotation.Nullable;
-//import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import org.opencv.core.Point;
 
@@ -31,6 +25,11 @@ import devliving.online.cvscanner.BaseFragment;
 import devliving.online.cvscanner.R;
 import devliving.online.cvscanner.util.CVProcessor;
 import devliving.online.cvscanner.util.Util;
+
+//import android.support.annotation.ColorRes;
+//import android.support.annotation.DrawableRes;
+//import android.support.annotation.Nullable;
+//import android.support.v4.graphics.drawable.DrawableCompat;
 
 /**
  * Created by Mehedi Hasan Khan <mehedi.mailing@gmail.com> on 8/29/17.
@@ -51,9 +50,9 @@ public class ImageCropperFragment extends BaseFragment implements CropImageView.
     final static String ARG_RT_IMAGE_COLOR_RES = "rotate_imageColorRes";
 
     protected CropImageView mImageView;
-    protected ImageButton mRotateLeft;
-    protected ImageButton mRotateRight;
-    protected ImageButton mSave;
+    protected ImageView mRotateLeft;
+    protected ImageView mRotateRight;
+    protected ImageView mSave;
 
     protected CropHighlightView mCrop;
 
@@ -123,18 +122,18 @@ public class ImageCropperFragment extends BaseFragment implements CropImageView.
 
         int buttonTintColor = getResources().getColor(extras.getInt(ARG_SAVE_IMAGE_COLOR_RES, R.color.colorAccent));
         int secondaryBtnTintColor = getResources().getColor(extras.getInt(ARG_RT_IMAGE_COLOR_RES, R.color.colorPrimary));
-        Drawable saveBtnDrawable = getResources().getDrawable(extras.getInt(ARG_SAVE_IMAGE_RES, R.drawable.ic_check_circle));
-        Drawable rotateLeftDrawable = getResources().getDrawable(extras.getInt(ARG_RT_LEFT_IMAGE_RES, R.drawable.ic_rotate_left));
-        Drawable rotateRightDrawable = getResources().getDrawable(extras.getInt(ARG_RT_RIGHT_IMAGE_RES, R.drawable.ic_rotate_right));
-        
-        DrawableCompat.setTint(rotateLeftDrawable, secondaryBtnTintColor);
-        mRotateLeft.setImageDrawable(rotateLeftDrawable);
-
-        DrawableCompat.setTint(rotateRightDrawable, secondaryBtnTintColor);
-        mRotateRight.setImageDrawable(rotateRightDrawable);
-
-        DrawableCompat.setTint(saveBtnDrawable, buttonTintColor);
-        mSave.setImageDrawable(saveBtnDrawable);
+//        Drawable saveBtnDrawable = getResources().getDrawable(extras.getInt(ARG_SAVE_IMAGE_RES, R.drawable.ic_check_circle));
+//        Drawable rotateLeftDrawable = getResources().getDrawable(extras.getInt(ARG_RT_LEFT_IMAGE_RES, R.drawable.ic_rotate_left));
+//        Drawable rotateRightDrawable = getResources().getDrawable(extras.getInt(ARG_RT_RIGHT_IMAGE_RES, R.drawable.ic_rotate_right));
+//
+//        DrawableCompat.setTint(rotateLeftDrawable, secondaryBtnTintColor);
+//        mRotateLeft.setImageDrawable(rotateLeftDrawable);
+//
+//        DrawableCompat.setTint(rotateRightDrawable, secondaryBtnTintColor);
+//        mRotateRight.setImageDrawable(rotateRightDrawable);
+//
+//        DrawableCompat.setTint(saveBtnDrawable, buttonTintColor);
+//        mSave.setImageDrawable(saveBtnDrawable);
     }
 
     @Override

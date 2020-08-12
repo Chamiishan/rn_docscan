@@ -4,7 +4,8 @@ import Login from './components/Login';
 import Splash from './components/Splash';
 import HomeRoot from './components/HomeRoot';
 import Scanner from './components/Scanner';
-import ImageCropView from './components/ImageCropView';
+import Settings from './components/Settings';
+import ExportAsPdf from './components/ExportAsPdf';
 
 const AppRouter = () => (
    <Router>
@@ -17,10 +18,8 @@ const AppRouter = () => (
          <Scene
             key="scanner" hideNavBar={true} component={Scanner}
          />
-         <Scene
-            key="image_crop_view" hideNavBar={true} component={ImageCropView}
-         />
-
+         <Scene key='settings' hideNavBar={true} component={Settings}/>
+         <Scene key='exportaspdf' hideNavBar={true} component={ExportAsPdf}/>
       </Scene>
    </Router>
 )

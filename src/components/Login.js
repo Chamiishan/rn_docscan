@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import {
+    View, Text, StyleSheet, Dimensions, TouchableOpacity
+} from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { Button } from './common';
 import { Actions } from 'react-native-router-flux';
@@ -13,7 +15,7 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 class Login extends Component {
 
     skip() {
-        Actions.reset('home_root',{login_status: false});
+        Actions.reset('home_root', { login_status: false });
     }
 
     componentDidMount() {
@@ -57,9 +59,9 @@ class Login extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <Text style={styles.skTxt} onPress={() => {this.skip() }}>
+                {/* <Text style={styles.skTxt} onPress={() => {this.skip() }}>
                     Skip
-                    </Text>
+                    </Text> */}
                 <View style={styles.container}>
                     <Text style={styles.mainTxt}>Scanner</Text>
                     <View style={styles.powerContainer}>
@@ -77,15 +79,17 @@ class Login extends Component {
                         />
                     </View>
                 </View>
-               {/*  <View style={{ flex: 0.1, alignItems: 'flex-start' }}>
-                    <Button onPress={() => { this.continueBtnPressed() }}>Continue</Button>
-                </View>
-                <TouchableOpacity style={{ flex: 0.1, alignItems: 'flex-start' }}
-                    onPress={() => { this.continueBtnPressed() }}>
-                    <Text style={styles.skTxt} >
-                        Continue
+                {/* <View style={{ flex: 0.1, alignItems: 'flex-start' }}>
+                    <Button onPress={() => { this.skip() }}>Skip</Button>
+                </View> */}
+                <TouchableOpacity style={{ flex: 0.1, alignItems: 'flex-end', margin:10 }}
+                    onPress={() => { this.skip() }}>
+                    <View style={{backgroundColor:'green', borderRadius: 15}}>
+                        <Text style={styles.skTxt} >
+                            SKIP
             </Text>
-                </TouchableOpacity> */}
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     skTxt: {
-        color: '#007a1f',
+        color: '#ffffff',
         fontSize: 20,
         alignSelf: "flex-end",
         margin: 20,

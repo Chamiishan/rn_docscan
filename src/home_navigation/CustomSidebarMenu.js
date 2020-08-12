@@ -1,54 +1,82 @@
 import React, { Component } from 'react';
 import {
   View, StyleSheet, Image, Text, TouchableNativeFeedback,
-  AsyncStorage
+  AsyncStorage,
+  // Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { GoogleSignin } from 'react-native-google-signin';
 import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux';
 import { LOGIN_SUCCESS } from '../utils/Constants';
 // import Folders from '../components/Folders';
+
+// const screenWidth = Math.round(Dimensions.get('window').width);
+// const screenHeight = Math.round(Dimensions.get('window').height);
 
 class CustomSidebarMenu extends Component {
   constructor(props) {
     super(props);
     this.getLoginStatus();
-    //Setting up the Main Top Large Image of the Custom Sidebar
-    this.proileImage =
-      'https://aboutreact.com/wp-content/uploads/2018/07/sample_img.png';
     //Array of the sidebar navigation option with icon and screen to navigate
     //This screens can be any screen defined in Drawer Navigator in App.js
     //You can find the Icons from here https://material.io/tools/icons/
     this.items = [
       {
-        navOptionThumb: 'camera',
-        navOptionName: 'Home',
-        screenToNavigate: 'Folders',
+        // navOptionThumb: 'camera',
+        navOptionName: 'All Docs',
+        screenToNavigate: 'Screen 1',
       },
-      // {
-      //   navOptionThumb: 'image',
-      //   navOptionName: 'Second Screen',
-      //   screenToNavigate: 'NavScreen2',
-      // },
-      // {
-      //   navOptionThumb: 'build',
-      //   navOptionName: 'Third Screen',
-      //   screenToNavigate: 'NavScreen3',
-      // },
+      {
+        // navOptionThumb: 'image',
+        navOptionName: 'Export as a PDF',
+        screenToNavigate: 'exportaspdf',
+      },
+      {
+        // navOptionThumb: 'build',
+        navOptionName: 'Import & Export Files',
+        screenToNavigate: 'Screen 3',
+      },
+      {
+        // navOptionThumb: 'build',
+        navOptionName: 'Notifications',
+        screenToNavigate: 'Screen 4',
+      },
+      {
+        // navOptionThumb: 'build',
+        navOptionName: 'About Us',
+        screenToNavigate: 'Screen 5',
+      },
+      {
+        // navOptionThumb: 'build',
+        navOptionName: 'Settings',
+        screenToNavigate: 'settings',
+      },
+      {
+        // navOptionThumb: 'build',
+        navOptionName: 'Help',
+        screenToNavigate: 'Screen 7',
+      },
     ];
   }
 
   getLoginStatus = async () => {
     this.state = {
-      login_status: '' 
-    }; 
+      login_status: '',
+      user: null
+    };
     try {
       const value = await AsyncStorage.getItem("login_status")
       console.log("value: ", value);
-        this.setState({
-          login_status: value 
-        }); 
+      this.setState({
+        login_status: value
+      });
+      const user = await AsyncStorage.getItem("user")
+      // user.map(item => console.log("item: ", item))
+      // let json = JSON.stringify(user)
+      console.log("user ", JSON.parse(user).email);
+      this.setState({
+        user: JSON.parse(user)
+      });
     } catch (e) {
       // error reading value
       console.log("error")
@@ -90,42 +118,27 @@ class CustomSidebarMenu extends Component {
     console.log('Done.')
   }
 
-  getLoginMenu(){
+  getLoginMenu() {
 
-    if(this.state.login_status == LOGIN_SUCCESS){
-      return(
+    if (this.state.login_status == LOGIN_SUCCESS) {
+      return (
         <TouchableNativeFeedback background={ripple} onPress={() => {
           console.log('logout')
           this.signOut();
         }}>
-          <View style={styles.itemStyle}>
-            <Icon
+          <View style={styles.loginViewStyle}>
+            {/* <Icon
               name='logout'
               size={20}
               style={{ marginRight: '10%' }}
-            />
-            <Text style={{ color: 'black', fontFamily: 'sans-serif-medium' }}>Logout</Text>
-          </View>
-        </TouchableNativeFeedback>
-      );
-  
-    }else{
-      return(
-        <TouchableNativeFeedback background={ripple} onPress={() => {
-          console.log('logout');
-          Actions.reset('login', {login_status: true});
-        }}>
-          <View style={styles.itemStyle}>
-            <Icon
-              name='login'
-              size={20}
-              style={{ marginRight: '10%' }}
-            />
-            <Text style={{ color: 'black', fontFamily: 'sans-serif-medium' }}>Login</Text>
+            /> */}
+            <Text style={{ fontSize: 18, color: 'black', fontFamily: 'sans-serif-medium' }}>Logout</Text>
           </View>
         </TouchableNativeFeedback>
       );
 
+    } else {
+      return null;
     }
 
   }
@@ -133,12 +146,23 @@ class CustomSidebarMenu extends Component {
   render() {
     return (
       <View style={styles.sideMenuContainer}>
-        {/*Top Large Image */}
-        {/* <Image
-          source={{ uri: this.proileImage }}
-          style={styles.sideMenuProfileIcon}
-        /> */}
-        {/*Divider between Top Image and Sidebar Option*/}
+
+        <TouchableNativeFeedback background={ripple} onPress={() => {
+          if (this.state.user == null) {
+            Actions.reset('login', { login_status: false });
+          }
+        }}>
+          <View style={styles.signinContainer}>
+            <Image
+              source={this.state.user == null ? require('../icons/user.png') : { uri: this.state.user.photo }}
+              style={styles.sideMenuProfileIcon}
+            />
+            <Text style={styles.signInText}>{this.state.user == null ? "Sign In / Register" :
+              this.state.user.email
+            }</Text>
+          </View>
+        </TouchableNativeFeedback>
+
         <View
           style={{
             width: '100%',
@@ -149,38 +173,49 @@ class CustomSidebarMenu extends Component {
         />
         {/*Setting up Navigation Options from option array using loop*/}
         {this.items.map((item, key) => (
-          <View
-            style={styles.itemStyle
-              //   ,{
-              //   backgroundColor: global.currentScreenIndex === key ? '#e0dbdb' : '#ffffff',
-              // }
-            }
-            key={key}>
-            {/* <View style={{ marginRight: 10, marginLeft: 20 }}>
+          <TouchableNativeFeedback background={ripple} onPress={() => {
+            global.currentScreenIndex = key;
+            this.props.navigation.closeDrawer();
+            Actions.push(item.screenToNavigate);
+          }}>
+            <View
+              style={styles.itemStyle
+                //   ,{
+                //   backgroundColor: global.currentScreenIndex === key ? '#e0dbdb' : '#ffffff',
+                // }
+              }
+              key={key}>
+              {/* <View style={{ marginRight: 10, marginLeft: 20 }}>
                 <Icon name={item.navOptionThumb} size={25} color="#808080" />
               </View> */}
-            <Icon
+              {/* <Icon
               name="home"
               // type='simple-line-icon'
               size={20}
               color="#000"
               style={{ marginRight: '10%' }}
-            />
-            <Text
-              style={{
-                fontSize: 15,
-                color: global.currentScreenIndex === key ? 'red' : 'black',
-              }}
-              onPress={() => {
-                global.currentScreenIndex = key;
-                this.props.navigation.navigate(item.screenToNavigate);
-              }}>
-              {item.navOptionName}
-            </Text>
-          </View>
+            /> */}
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: 'black'
+                  // color: global.currentScreenIndex === key ? 'red' : 'black',
+                }}
+              // onPress={() => {
+              //   global.currentScreenIndex = key;
+              //   this.props.navigation.navigate(item.screenToNavigate);
+              // }}
+              >
+                {item.navOptionName}
+              </Text>
+            </View>
+          </TouchableNativeFeedback>
         ))}
         {this.getLoginMenu()}
-       
+        <View style={styles.appDetailStyle}>
+          <Text style={{ fontStyle: 'italic', }}>Version: 1.01 beta</Text>
+          <Text style={{ fontSize: 16, color: 'black', margin: 5 }}>Made In India</Text>
+        </View>
       </View>
     );
   }
@@ -193,22 +228,51 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: "flex-start",
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
     paddingTop: 20,
   },
+  signinContainer: {
+    padding: 20,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  signInText: {
+    color: '#007818',
+    fontSize: 15
+  },
   sideMenuProfileIcon: {
-    resizeMode: 'center',
-    width: 150,
-    height: 150,
     marginTop: 20,
-    borderRadius: 150 / 2,
+    marginBottom: 10,
+    height: 80,
+    width: 80,
+    borderColor: '#82817e',
+    borderWidth: 2,
+    borderRadius: 80,
   },
   itemStyle: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
-  }
+    padding: 15,
+    backgroundColor: 'white'
+  },
+  loginViewStyle: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 20,
+    backgroundColor: 'white'
+  },
+  appDetailStyle: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: "center",
+    alignSelf: "center",
+    padding: 10,
+    marginTop: 40,
+  },
 });
 
 // const mapStateToProps = (state) => {

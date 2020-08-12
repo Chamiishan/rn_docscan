@@ -23,16 +23,24 @@ import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
 import devliving.online.cvscanner.CVScanner;
 import devliving.online.cvscanner.R;
+
+import static android.util.Config.LOGD;
 
 /**
  * The activity can crop specific region of interest from an image.
@@ -46,6 +54,10 @@ public class CropImageActivity extends AppCompatActivity implements CVScanner.Im
 
     public final static String EXTRA_SAVE_BTN_COLOR_RES = "save_imageColorRes";
     public final static String EXTRA_ROTATE_BTN_COLOR_RES = "rotate_imageColorRes";
+    private static final String TAG = "CropImageActivity";
+
+    private int BS_CURRENT_STATE = BottomSheetBehavior.STATE_COLLAPSED;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -53,29 +65,77 @@ public class CropImageActivity extends AppCompatActivity implements CVScanner.Im
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+//        getWindow().getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//            getSupportActionBar().setTitle("");
+//            getSupportActionBar().hide();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
         }
 
         setContentView(R.layout.scanner_activity);
+        View view = findViewById(R.id.layout_bs);
+
+// init the bottom sheet behavior
+        mBottomSheetBehavior = BottomSheetBehavior.from(view);
+
+        // change the state of the bottom sheet
+//        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        // set the peek height
+        mBottomSheetBehavior.setPeekHeight(0);
+
+// set hideable or not
+        mBottomSheetBehavior.setHideable(false);
+        mBottomSheetBehavior.setBottomSheetCallback(callback);
+    }
+
+    BottomSheetBehavior.BottomSheetCallback callback = new BottomSheetBehavior.BottomSheetCallback() {
+
+        @Override
+        public void onStateChanged(@NonNull View view, int i) {
+            Log.d(TAG, "onStateChanged: value if i" + i);
+            if (i == BottomSheetBehavior.STATE_EXPANDED) {
+                BS_CURRENT_STATE = BottomSheetBehavior.STATE_EXPANDED;
+            } else if (i == BottomSheetBehavior.STATE_COLLAPSED) {
+                BS_CURRENT_STATE = BottomSheetBehavior.STATE_COLLAPSED;
+            }
+        }
+
+        @Override
+        public void onSlide(@NonNull View view, float v) {
+
+        }
+    };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+        } else if (itemId == R.id.save_cropped) {
+            Log.d(TAG, "onOptionsItemSelected: save image");
+            if (BS_CURRENT_STATE == BottomSheetBehavior.STATE_EXPANDED) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            } else if (BS_CURRENT_STATE == BottomSheetBehavior.STATE_COLLAPSED) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

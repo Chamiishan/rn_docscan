@@ -3,7 +3,7 @@ import {
     View, Text, Image, TouchableHighlight, TouchableOpacity, StyleSheet,
     SafeAreaView, ScrollView, Dimensions, NativeModules
 } from 'react-native';
-import { Header } from './common/Header';
+import { Header } from './common';
 import AsyncStorage from '@react-native-community/async-storage';
 import { DrawerActions } from 'react-navigation-drawer';
 import { withNavigation } from 'react-navigation';

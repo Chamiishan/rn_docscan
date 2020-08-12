@@ -35,7 +35,7 @@ export default LoginReducer = (state = INITIAL_STATE, action) => {
             return { ...state, login_status: IN_PROGRESS };
         case LOGIN_SUCCESS:
             storeValue('login_status', LOGIN_SUCCESS);
-            storeObject('user', action.payload);
+            storeObject('user', action.payload.user);
             
             // console.log('Reducer: User Info --> ', action.payload);
 
