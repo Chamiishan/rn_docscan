@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View, StyleSheet } from 'react-native';
 
 const Input = ({ label, value, onChangeText, autoCorrect, placeHolder, secureTextEntry }) => {
 
@@ -7,7 +7,7 @@ const Input = ({ label, value, onChangeText, autoCorrect, placeHolder, secureTex
 
     return (
         <View style={containerStyle}>
-            <Text style={textStyle}>{label}</Text>
+            {/* <Text style={textStyle}>{label}</Text> */}
             <TextInput
                 secureTextEntry = {secureTextEntry}
                 placeholder={placeHolder}
@@ -17,29 +17,30 @@ const Input = ({ label, value, onChangeText, autoCorrect, placeHolder, secureTex
 
 }
 
-const styles = {
+const styles = StyleSheet.create({
     inputStyle: {
         color: '#000',
         fontSize: 18,
-        height: 40,
+        height: 50,
         width: null,
-        flex: 2,
-        paddingRight: 5,
-        paddingLeft: 5
+        flex: 1,
     },
     textStyle: {
         paddingLeft: 10,
         color: '#000',
         fontSize: 18,
-        flex: 1
+        // flex: 1
     },
     containerStyle: {
         height: 50,
         flex: 1,
+        elevation: 1,
         flexDirection: 'row',
-        borderWidth: 1,
+        // borderWidth: 1,
+        // borderColor: 'grey',
         alignItems: 'center'
     }
-};
+});
+
 
 export { Input }
